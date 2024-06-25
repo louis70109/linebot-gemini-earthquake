@@ -158,14 +158,13 @@ async def handle_callback(request: Request):
                 response = model.generate_content(
                     f'你現在身處在台灣，相關資訊 {total_info}，我朋友說了「{text}」，請問是否有誇張、假裝的嫌疑？ 回答是或否。')
                 reply_msg = response.text
-            else:
-                # model = genai.GenerativeModel('gemini-pro')
-                messages.append({'role': 'user', 'parts': [text]})
-                response = model.generate_content(messages)
-                messages.append({'role': 'model', 'parts': [text]})
-                # 更新firebase中的對話紀錄
-                fdb.put_async(user_chat_path, None, messages)
-                reply_msg = response.text
+            # model = genai.GenerativeModel('gemini-pro')
+            messages.append({'role': 'user', 'parts': [text]})
+            response = model.generate_content(messages)
+            messages.append({'role': 'model', 'parts': [text]})
+            # 更新firebase中的對話紀錄
+            fdb.put_async(user_chat_path, None, messages)
+            reply_msg = response.text
 
             await line_bot_api.reply_message(
                 ReplyMessageRequest(
