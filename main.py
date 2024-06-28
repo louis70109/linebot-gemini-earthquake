@@ -162,7 +162,7 @@ async def handle_callback(request: Request):
                 # model = genai.GenerativeModel('gemini-pro')
                 messages.append({'role': 'user', 'parts': [text]})
                 response = model.generate_content(messages)
-                messages.append({'role': 'model', 'parts': [text]})
+                messages.append({'role': 'model', 'parts': [response.text]})
                 # 更新firebase中的對話紀錄
                 fdb.put_async(user_chat_path, None, messages)
                 reply_msg = response.text

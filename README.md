@@ -76,3 +76,4 @@ The application uses Python's built-in logging module. The log level can be set 
 ## License
 
 This project is licensed under the MIT License.
+
