@@ -175,7 +175,33 @@ async def handle_callback(request: Request):
 
     return 'OK'
 
-if __name__ == "__main__":
+    #功能介紹區
+    @handler.add(MessageEvent, message=TextMessage)
+    def handle_message(event):
+        message = text=event.message.text
+        if re.match('功能',message):
+            buttons_template_message = TemplateSendMessage(
+            alt_text='使用功能簡介',
+            template=ButtonsTemplate(
+                thumbnail_image_url='https://i.imgur.com/wpM584d.jpg',
+                title='行銷搬進大程式',
+                text='選單功能－TemplateSendMessage',
+                actions=[
+                   MessageAction(
+                        label='什麼事FoMO？',
+                        text='FOMO（Fear Of Missing Out，錯失恐懼症）由金融家Patrick McGinnis提出，指個體因害怕錯過機會或無法參與他人活動而產生的焦慮和恐懼。這種現象根植於人類基因，與歸屬感密切相關，代表著安全感和認同感。\n在社交媒體和快節奏生活中，人們通過與他人的連結獲取信息、得到認可和肯定，這促發了FOMO。\n 而社交平台的限時動態和短影音內容激發了FOMO心理，讓人渴望在短時間內獲取信息，並通過模仿行為來獲得更多關注和認同。然而，過度依賴他人的反應可能導致負面情緒，影響生活信念和態度。因此，需保持平衡，以避免FOMO帶來的負面影響。'
+                    ),
+                    URIAction(
+                        label='行銷搬進大程式',
+                        uri='https://marketingliveincode.com/'
+                    )
+                ]
+            )
+        )
+            line_bot_api.reply_message(event.reply_token, buttons_template_message)
+        else:
+            line_bot_api.reply_message(event.reply_token, TextSendMessage(message))
+    if __name__ == "__main__":
     port = int(os.environ.get('PORT', default=8080))
     debug = True if os.environ.get(
         'API_ENV', default='develop') == 'develop' else False
