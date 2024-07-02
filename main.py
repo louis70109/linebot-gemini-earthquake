@@ -175,29 +175,6 @@ async def handle_callback(request: Request):
 
     return 'OK'
 
-    @app.route("/callback", methods=['POST'])
-    def callback():
-       signature = request.headers['X-Line-Signature']
-       body = request.get_data(as_text=True)
-       try:
-           handler.handle(body, signature)
-       except InvalidSignatureError:
-           abort(400)
-       return 'OK'
-    
-    @handler.add(MessageEvent, message=TextMessage)
-    def handle_message(event):
-       mtext = event.message.text
-       if mtext =='＠確診後流程':
-           try:
-               message = TextSendMessage(
-                   text = "確診後該怎麼辦? (SOP圖示)"
-               )
-               line_bot_api.reply_message(event.reply_token, message)
-           except:
-               line_bot_api.reply_message(event.reply_token,
-                   TextSendMessage(text= 'Sorry 屁桃故障囉！'))
-
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', default=8080))
     debug = True if os.environ.get(
